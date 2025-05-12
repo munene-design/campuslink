@@ -2,7 +2,8 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-   <section className="animated-bg relative min-h-screen flex items-center justify-center overflow-hidden text-white">
+  <section className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-8 pb-8 bg-gradient-to-br from-[#1e3c72] via-[#2a5298] to-[#1e3c72] text-white">
+
 
       {/* Background Glow Effects */}
       <div className="absolute w-[500px] h-[500px] bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse top-[-100px] left-[-100px] z-0" />
