@@ -14,7 +14,7 @@ export default function CTASection() {
 
         <div className="flex justify-center gap-4 mt-6">
           <a
-            href="/course-finder"
+            href="/enter-grades"
             className="relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 rounded-xl font-bold text-black shadow-lg hover:scale-105 transition-all duration-300"
           >
             <span className="mr-2 animate-bounce">
