@@ -1,4 +1,5 @@
 import React from 'react';
+import{Link} from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -20,12 +21,12 @@ const HeroSection = () => {
 
         {/* CTA Buttons */}
         <div className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center">
-          <a
-            href="/course-finder"
+         <Link
+            to="/enter-grades"
             className="bg-yellow-400 hover:bg-yellow-300 text-black py-3 px-8 rounded-full font-semibold shadow-md transition-all duration-300"
           >
-            🎓 Find My Course Now
-          </a>
+              🎓 Find My Course Now
+        </Link> 
           <a
             href="#faq"
             className="border border-white text-white py-3 px-8 rounded-full font-medium hover:bg-white hover:text-black transition-all duration-300"
