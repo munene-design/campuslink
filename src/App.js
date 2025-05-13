@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+ import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Sections
-import BreakingNewsRibbon from './components/BreakingNewsRibbon';
-import HeroSection from './components/HeroSection';
-import UpdatesSection from './components/UpdatesSection';
-import CTASection from './components/CTASection';
-import EmailSignup from './components/EmailSignup';
-import FAQSection from './components/FAQSection';
-import FloatingActions from './components/FloatingActions';
-import Footer from './components/Footer';
+import BreakingNewsRibbon from "./components/BreakingNewsRibbon";
+import HeroSection from "./components/HeroSection";
+import UpdatesSection from "./components/UpdatesSection";
+import CTASection from "./components/CTASection";
+import EmailSignup from "./components/EmailSignup";
+import FAQSection from "./components/FAQSection";
+import FloatingActions from "./components/FloatingActions";
+import Footer from "./components/Footer";
 
 // Pages
-import GradesPage from './components/pages/GradesPage';
+import GradesPage from "./components/pages/GradesPage";
+import ClusterWeightPage from "./components/pages/ClusterWeightPage";
 
 function App() {
   useEffect(() => {
@@ -35,16 +36,19 @@ function App() {
                 <CTASection />
                 <EmailSignup />
                 <FAQSection />
-                <FloatingActions />
                 <Footer />
               </>
             }
           />
           <Route path="/enter-grades" element={<GradesPage />} />
+          <Route path="/enter-cluster" element={<ClusterWeightPage />} />
         </Routes>
+
+        {/* Floating icons shared on all pages */}
+        <FloatingActions />
       </div>
     </Router>
   );
 }
 
-export default App;
+export default App;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { FaWhatsapp, FaRobot } from 'react-icons/fa';
+
 
 const GradesPage = () => {
   useEffect(() => {
@@ -90,32 +90,20 @@ const GradesPage = () => {
           </div>
         ))}
 
-        <div className="text-center" data-aos="zoom-in">
-          <button className="bg-purple-600 text-white px-10 py-3 mt-6 rounded-full text-lg font-semibold shadow-lg hover:bg-purple-700 transition duration-300">
-            Continue ➡
-          </button>
-        </div>
+   <div className="text-center relative group" data-aos="zoom-in">
+  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-4 py-1 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg">
+    Proceed to Cluster Weights
+  </div>
+  <a
+    href="/enter-cluster"
+    className="bg-purple-600 text-white px-10 py-3 mt-6 rounded-full text-lg font-semibold shadow-lg hover:bg-purple-700 transition duration-300 inline-block animate-bounce"
+  >
+    Continue ➡
+  </a>
+</div>
       </div>
 
-      {/* Floating Icons */}
-      <div className="fixed bottom-6 right-6 flex flex-col items-center space-y-3 z-50">
-        <a
-          href="https://wa.me/254700000000"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-green-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition"
-          title="Chat on WhatsApp"
-        >
-          <FaWhatsapp size={24} />
-        </a>
-        <button
-          onClick={() => alert('Chatbot coming soon!')}
-          className="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition"
-          title="Talk to Chatbot"
-        >
-          <FaRobot size={24} />
-        </button>
-      </div>
+     
     </div>
   );
 };
