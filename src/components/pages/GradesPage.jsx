@@ -25,8 +25,9 @@ const GradesPage = () => {
     },
     {
       title: 'Technical & Business 💼',
-      subjects: ['Business Studies']
+      subjects: ['Business Studies', 'Agricuture', 'Computer' , 'Power Mechanics' , 'Electricity']
     }
+    
   ];
 
   return (

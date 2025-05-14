@@ -32,7 +32,7 @@ function App() {
             path="/"
             element={
               <>
-                <Navbar /> {/* Added Fixed Menu */}
+              
                
                 <HeroSection />
                 <UpdatesSection />
@@ -50,6 +50,7 @@ function App() {
 
         {/* Floating buttons always visible */}
         <FloatingActions />
+        <Navbar /> {/* Added Fixed Menu */}
       </div>
     </Router>
   );
