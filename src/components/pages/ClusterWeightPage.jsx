@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ClusterHelpModal from '../ClusterHelpModal';
+import { useNavigate } from 'react-router-dom';
+
 
 const ClusterWeightPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,6 +11,7 @@ const ClusterWeightPage = () => {
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
+const navigate = useNavigate();
 
   const clusters = [
     { name: "Law", icon: "⚖️" },
@@ -81,9 +84,14 @@ const ClusterWeightPage = () => {
 
           {/* Continue Button */}
           <div className="text-center mt-10" data-aos="zoom-in">
-            <button className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-12 py-3 rounded-full text-lg font-bold shadow-lg hover:scale-105 transition duration-300">
-              Continue ➡
-            </button>
+           
+           <button
+              onClick={() => navigate("/enter-interest")}
+                className="bg-purple-600 text-white px-10 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-purple-700 transition duration-300"
+        >
+               Continue ➡
+           </button>
+
           </div>
         </div>
       </div>

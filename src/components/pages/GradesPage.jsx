@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import { Link } from "react-router-dom";
 
 const GradesPage = () => {
   useEffect(() => {
@@ -94,12 +94,12 @@ const GradesPage = () => {
   <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-4 py-1 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg">
     Proceed to Cluster Weights
   </div>
-  <a
-    href="/enter-cluster"
-    className="bg-purple-600 text-white px-10 py-3 mt-6 rounded-full text-lg font-semibold shadow-lg hover:bg-purple-700 transition duration-300 inline-block animate-bounce"
-  >
-    Continue ➡
-  </a>
+  <Link
+  to="/enter-cluster"
+  className="bg-purple-600 text-white px-10 py-3 mt-6 rounded-full text-lg font-semibold shadow-lg hover:bg-purple-700 transition duration-300 inline-block animate-bounce"
+>
+  Continue ➡
+</Link>
 </div>
       </div>
 

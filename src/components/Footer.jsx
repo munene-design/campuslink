@@ -30,9 +30,10 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="/course-finder" className="hover:text-white">
+              <a href="/enter-grades" className="hover:text-white">
                 Course Finder
               </a>
+          
             </li>
             <li>
               <a href="#faq" className="hover:text-white">

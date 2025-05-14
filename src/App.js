@@ -1,4 +1,4 @@
- import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -16,6 +16,7 @@ import Footer from "./components/Footer";
 // Pages
 import GradesPage from "./components/pages/GradesPage";
 import ClusterWeightPage from "./components/pages/ClusterWeightPage";
+import InterestSelectionPage from "./components/pages/InterestSelectionPage";
 
 function App() {
   useEffect(() => {
@@ -42,13 +43,14 @@ function App() {
           />
           <Route path="/enter-grades" element={<GradesPage />} />
           <Route path="/enter-cluster" element={<ClusterWeightPage />} />
+          <Route path="/enter-interest" element={<InterestSelectionPage />} />
         </Routes>
 
-        {/* Floating icons shared on all pages */}
+        {/* Floating buttons always visible */}
         <FloatingActions />
       </div>
     </Router>
   );
 }
 
-export default App;
+export default App;

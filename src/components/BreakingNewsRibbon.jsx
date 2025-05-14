@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
 
 const updates = [
-  "📢 KUCCPS Portal Opens: June 1–30, 2024",
+  "📢 KUCCPS Portal Opens: June 1–30, 2025",
   "🆕 New Programs Added – Explore now!",
   "🔔 Revised Cutoff Points Released – Check yours today",
 ];
@@ -12,9 +12,7 @@ export default function BreakingNewsRibbon() {
 
   return (
     <div className="relative bg-red-600 text-white py-2 overflow-hidden">
-      {/* Pulsing Dot */}
-      <div className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full animate-ping z-10" />
-      
+     
       {/* Breaking Icon */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 z-20 flex items-center space-x-1">
         <BsFillExclamationTriangleFill className="text-yellow-300 animate-bounce" />

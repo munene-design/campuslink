@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 const updates = [
   {
     icon: "📣",
-    text: "KUCCPS portal opens on June 1st.",
+    text: "KUCCPS portal Is now closed.",
     badge: "Official",
   },
   {
     icon: "🛠️",
-    text: "Policy updates for 2024 programs released.",
+    text: "Policy updates for 2025 programs released.",
     badge: "New",
   },
   {

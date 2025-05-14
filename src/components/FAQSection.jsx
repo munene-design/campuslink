@@ -1,25 +1,26 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faqData = [
   {
     question: "What is KUCCPS?",
-    answer:
-      "KUCCPS is the Kenya Universities and Colleges Central Placement Service. It manages the placement of students to universities and colleges based on their KCSE results.",
+    answer: "KUCCPS is the Kenya Universities and Colleges Central Placement Service that manages student placement to universities based on KCSE results.",
+    icon: "🏛️"
   },
   {
     question: "How do I use this platform?",
-    answer:
-      "Simply input your KCSE grades, and we’ll calculate your cluster points and match you with the most suitable courses at universities across Kenya.",
+    answer: "Input your KCSE grades to calculate cluster points and get matched with suitable courses across Kenyan universities.",
+    icon: "🖥️"
   },
   {
     question: "What are cluster points?",
-    answer:
-      "Cluster points are calculated based on your KCSE subjects and grades. They determine the courses you qualify for at different universities.",
+    answer: "Points calculated from your KCSE subjects that determine which university courses you qualify for.",
+    icon: "📊"
   },
   {
-    question: "How can I check university cutoffs?",
-    answer:
-      "Once you’ve input your grades and cluster points, we’ll show you the courses and universities that fit your profile, including the current cutoffs.",
+    question: "How can I check cutoffs?",
+    answer: "After entering your grades, we'll show matching courses and universities with current cutoffs.",
+    icon: "🎯"
   },
 ];
 
@@ -31,32 +32,70 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="bg-gray-50 py-16 px-6">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10 text-center">
-          Frequently Asked Questions
-        </h2>
-        <div className="space-y-6">
+    <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-gray-600 text-sm sm:text-base">
+            Quick answers to common questions
+          </p>
+        </div>
+
+        <div className="space-y-2">
           {faqData.map((item, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-white p-6 rounded-xl shadow-md border-l-4 transition hover:shadow-lg border-blue-500"
+              className="bg-white rounded-lg shadow-sm hover:shadow transition-shadow overflow-hidden border border-gray-200"
             >
-              <div
-                className="flex justify-between cursor-pointer"
+              <button
                 onClick={() => toggleAccordion(index)}
+                className="w-full px-4 py-3 text-left focus:outline-none"
               >
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {item.question}
-                </h3>
-                <div className="text-blue-600 text-lg">
-                  {openIndex === index ? "-" : "+"}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <span className="text-lg mr-2">{item.icon}</span>
+                    <h3 className="text-base sm:text-lg font-medium text-gray-800">
+                      {item.question}
+                    </h3>
+                  </div>
+                  <motion.span
+                    animate={{ rotate: openIndex === index ? 180 : 0 }}
+                    className="ml-2 h-5 w-5 flex items-center justify-center text-blue-600"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </motion.span>
                 </div>
-              </div>
-              {openIndex === index && (
-                <p className="text-gray-600 mt-4">{item.answer}</p>
-              )}
-            </div>
+              </button>
+
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="px-4 pb-3 pt-0"
+                  >
+                    <div className="text-sm sm:text-base text-gray-600 pl-7">
+                      <p>{item.answer}</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
         </div>
       </div>
