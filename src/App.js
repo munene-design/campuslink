@@ -4,7 +4,8 @@ import 'aos/dist/aos.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Sections
-import BreakingNewsRibbon from "./components/BreakingNewsRibbon";
+import Navbar from "./components/Navbar"; // NEW: Import the Navbar
+
 import HeroSection from "./components/HeroSection";
 import UpdatesSection from "./components/UpdatesSection";
 import CTASection from "./components/CTASection";
@@ -25,13 +26,14 @@ function App() {
 
   return (
     <Router>
-      <div className="font-sans bg-gray-50 text-gray-800">
+      <div className="font-sans bg-gray-50 text-gray-800 scroll-smooth">
         <Routes>
           <Route
             path="/"
             element={
               <>
-                <BreakingNewsRibbon />
+                <Navbar /> {/* Added Fixed Menu */}
+               
                 <HeroSection />
                 <UpdatesSection />
                 <CTASection />
@@ -53,4 +55,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;
