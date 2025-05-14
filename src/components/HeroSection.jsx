@@ -17,8 +17,13 @@ const HeroSection = () => {
   return (
     <section className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-8 pb-8 bg-gradient-to-br from-[#2a5298] via-[#4c6ef5] to-[#6b48ff] text-white">
       {/* Subtle Background Image */}
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-15 z-0 bg-blend-overlay" />
-
+ <div
+  className="absolute inset-0 bg-cover bg-center opacity-50 z-0"
+  style={{
+    backgroundImage: "url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')",
+    filter: "brightness(0.9)"
+  }}
+></div>
       {/* Glass Layer */}
       <div
         className="relative z-10 max-w-4xl w-full mx-auto text-center bg-white/20 backdrop-blur-xl border border-white/30 rounded-3xl shadow-2xl p-10"
