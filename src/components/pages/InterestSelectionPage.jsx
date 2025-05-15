@@ -82,7 +82,7 @@ const InterestSelectionPage = () => {
           >
             <button
               onClick={() =>
-                navigate('/course-results', {
+                navigate('/results', {
                   state: { selectedInterests },
                 })
               }
