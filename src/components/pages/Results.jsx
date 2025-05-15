@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, BookOpen, MessageCircle, X } from 'lucide-react';
+import { Download, BookOpen, MessageCircle,CheckCircle, LogIn, FileText, Sliders,  } from 'lucide-react';
+import AIAdvisor from '../AIAdvisor';
 
 const dummyResultsData = [
   {
@@ -86,6 +87,7 @@ const dummyResultsData = [
   }
 ];
 
+
 const handleDownloadPDF = () => {
   const doc = new jsPDF();
   doc.setFontSize(16);
@@ -96,16 +98,10 @@ const handleDownloadPDF = () => {
     doc.setFontSize(12);
     doc.text(`${idx + 1}. ${result.course}`, 10, yOffset);
     yOffset += 8;
-
     result.universities.forEach((uni) => {
-      doc.text(
-        ` - ${uni.name} (${uni.code}) - Cutoff: ${uni.cutoff}`,
-        15,
-        yOffset
-      );
+      doc.text(` - ${uni.name} (${uni.code}) - Cutoff: ${uni.cutoff}`, 15, yOffset);
       yOffset += 6;
     });
-
     yOffset += 6;
     if (yOffset > 270) {
       doc.addPage();
@@ -118,12 +114,16 @@ const handleDownloadPDF = () => {
 
 const Results = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [userQuery, setUserQuery] = useState('');
+  const [messages, setMessages] = useState([]);
+const [currentInput, setCurrentInput] = useState('');
+const [showApplyPopup, setShowApplyPopup] = useState(false);
 
   const closeModal = () => {
     setSelectedCourse(null);
-    setUserQuery('');
+   
   };
+
+ 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dfe9f3] to-[#ffffff] px-6 py-16 relative">
@@ -172,17 +172,27 @@ const Results = () => {
           ))}
         </div>
 
-        <div className="flex justify-center mt-12">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleDownloadPDF}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
-          >
-            <Download className="w-5 h-5" />
-            Download PDF
-          </motion.button>
-        </div>
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12">
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={handleDownloadPDF}
+    className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
+  >
+    <Download className="w-5 h-5" />
+    Download PDF
+  </motion.button>
+
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={() => setShowApplyPopup(true)}
+    className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
+  >
+    <BookOpen className="w-5 h-5" />
+    How to Apply
+  </motion.button>
+</div>
 
         <div className="flex flex-col items-center mt-10 text-center space-y-4">
           <p className="text-gray-700 max-w-xl text-sm md:text-base">
@@ -205,52 +215,95 @@ const Results = () => {
 
       {/* AI Advisor Popup */}
       <AnimatePresence>
-        {selectedCourse && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center px-4"
-            onClick={closeModal}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              onClick={(e) => e.stopPropagation()}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 relative"
-            >
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <h3 className="text-xl font-bold text-indigo-700 mb-2">
-                {selectedCourse.emoji} {selectedCourse.course}
-              </h3>
-              <p className="text-sm text-gray-600 mb-4">
-                This is a brief intro about {selectedCourse.course}. It’s a dynamic field with strong career potential in Kenya and globally.
-              </p>
+  {selectedCourse && (
+    <AIAdvisor
+      selectedCourse={selectedCourse}
+      closeModal={closeModal}
+      messages={messages}
+      setMessages={setMessages}
+      currentInput={currentInput}
+      setCurrentInput={setCurrentInput}
+    />
+  )}
+</AnimatePresence>
+<AnimatePresence>
+  {showApplyPopup && (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+    >
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 50, opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative w-full max-w-md bg-white/60 backdrop-blur-xl border border-white/30 shadow-2xl rounded-3xl p-6 text-gray-800"
+      >
+        {/* Close Button */}
+        <button
+          onClick={() => setShowApplyPopup(false)}
+          className="absolute top-4 right-4 text-xl text-indigo-700 hover:text-red-500 transition"
+        >
+          &times;
+        </button>
 
-              <div className="space-y-2 mb-3">
-                <input
-                  type="text"
-                  value={userQuery}
-                  onChange={(e) => setUserQuery(e.target.value)}
-                  placeholder="Ask something about this course..."
-                  className="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
-                />
-                {userQuery && (
-                  <div className="bg-gray-100 p-3 rounded-xl text-sm text-gray-700 shadow-inner">
-                    <strong>AI Advisor:</strong> That’s a great question! {selectedCourse.course} is very versatile and leads to many opportunities like...
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Heading */}
+        <h2 className="text-2xl font-extrabold text-center text-indigo-700 mb-5">
+          How to Apply on KUCCPS
+        </h2>
+
+        {/* Steps List */}
+        <ul className="space-y-4 text-sm">
+          <li className="flex items-center gap-3">
+            <LogIn className="text-indigo-600" size={20} />
+            Log in to your KUCCPS student portal.
+          </li>
+          <li className="flex items-center gap-3">
+            <FileText className="text-indigo-600" size={20} />
+            Enter your KCSE index number in “Apply Now”.
+          </li>
+          <li className="flex items-center gap-3">
+            <Sliders className="text-indigo-600" size={20} />
+            Input your 20 cluster weights.
+          </li>
+          <li className="flex items-center gap-3">
+            <BookOpen className="text-indigo-600" size={20} />
+            Select preferred degree courses by priority.
+          </li>
+          <li className="flex items-center gap-3">
+            <CheckCircle className="text-indigo-600" size={20} />
+            Submit and confirm your application choices.
+          </li>
+          <li className="flex items-center gap-3">
+            <Download className="text-indigo-600" size={20} />
+            Download the summary PDF for your records.
+          </li>
+        </ul>
+
+        {/* Footer */}
+        <div className="mt-6 flex flex-col items-center gap-3">
+          <a
+            href="https://students.kuccps.net/login/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-indigo-700 hover:text-indigo-900 text-sm"
+          >
+            Go to KUCCPS Portal
+          </a>
+          <button
+            onClick={() => setShowApplyPopup(false)}
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-purple-600 hover:to-indigo-500 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:scale-105 transition duration-300"
+          >
+            Got it!
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </div>
   );
 };

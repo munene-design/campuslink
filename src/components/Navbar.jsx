@@ -79,7 +79,7 @@ const Navbar = () => {
                 Reach out via WhatsApp or Email and we’ll respond shortly.
               </p>
               <a
-                href="https://wa.me/254712345678"
+                href="https://wa.me/254705290655"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 justify-center bg-gradient-to-r from-green-400 to-green-600 text-white py-3 px-5 rounded-full shadow-lg hover:scale-105 transition"
@@ -88,7 +88,7 @@ const Navbar = () => {
                 <span className="font-semibold">Chat on WhatsApp</span>
               </a>
               <a
-                href="mailto:help@kuccpsmatch.co.ke"
+                href="munenei977@gmail.com"
                 className="mt-4 flex items-center gap-3 justify-center bg-gradient-to-r from-blue-400 to-blue-600 text-white py-3 px-5 rounded-full shadow-lg hover:scale-105 transition"
               >
                 <FaEnvelope size={18} />
