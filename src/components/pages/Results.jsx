@@ -3,7 +3,88 @@ import jsPDF from 'jspdf';
 import { motion } from 'framer-motion';
 import { Download, BookOpen, X, LogIn, ClipboardList, CheckCircle } from 'lucide-react';
 
-const dummyResultsData = [/* unchanged data as in your original code */];
+ const dummyResultsData = [
+  {
+    course: "Medicine",
+    emoji: "🩺",
+    universities: [
+      { name: "University of Nairobi", code: "124513", cutoff: "42.7" },
+      { name: "Moi University", code: "125617", cutoff: "41.5" }
+    ]
+  },
+  {
+    course: "Law",
+    emoji: "⚖",
+    universities: [
+      { name: "Kenyatta University", code: "124789", cutoff: "39.2" },
+      { name: "Strathmore University", code: "126212", cutoff: "40.0" }
+    ]
+  },
+  {
+    course: "Engineering",
+    emoji: "🛠",
+    universities: [
+      { name: "JKUAT", code: "125934", cutoff: "43.0" },
+      { name: "Technical University of Kenya", code: "124999", cutoff: "41.8" }
+    ]
+  },
+  {
+    course: "Computer Science",
+    emoji: "💻",
+    universities: [
+      { name: "Maseno University", code: "126001", cutoff: "39.6" },
+      { name: "Kabarak University", code: "125855", cutoff: "38.9" }
+    ]
+  },
+  {
+    course: "Architecture",
+    emoji: "🏛",
+    universities: [
+      { name: "University of Nairobi", code: "124513", cutoff: "42.0" },
+      { name: "TUK", code: "124999", cutoff: "40.5" }
+    ]
+  },
+  {
+    course: "Education",
+    emoji: "📚",
+    universities: [
+      { name: "Egerton University", code: "124320", cutoff: "37.2" },
+      { name: "Kenyatta University", code: "124789", cutoff: "36.5" }
+    ]
+  },
+  {
+    course: "Nursing",
+    emoji: "💉",
+    universities: [
+      { name: "Moi University", code: "125617", cutoff: "40.8" },
+      { name: "JKUAT", code: "125934", cutoff: "41.0" }
+    ]
+  },
+  {
+    course: "Actuarial Science",
+    emoji: "📈",
+    universities: [
+      { name: "Maseno University", code: "126001", cutoff: "39.4" },
+      { name: "Strathmore University", code: "126212", cutoff: "41.0" }
+    ]
+  },
+  {
+    course: "Finance",
+    emoji: "💰",
+    universities: [
+      { name: "University of Nairobi", code: "124513", cutoff: "38.3" },
+      { name: "KCA University", code: "125400", cutoff: "37.0" }
+    ]
+  },
+  {
+    course: "Journalism",
+    emoji: "📰",
+    universities: [
+      { name: "Multimedia University", code: "126300", cutoff: "36.0" },
+      { name: "Daystar University", code: "126099", cutoff: "35.8" }
+    ]
+  }
+];
 
 const handleDownloadPDF = () => {
   const doc = new jsPDF();
