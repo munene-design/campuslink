@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
-import { motion } from 'framer-motion';
-import { Download, BookOpen, X, LogIn, ClipboardList, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, BookOpen, MessageCircle, X } from 'lucide-react';
 
- const dummyResultsData = [
+const dummyResultsData = [
   {
     course: "Medicine",
     emoji: "🩺",
@@ -98,7 +98,11 @@ const handleDownloadPDF = () => {
     yOffset += 8;
 
     result.universities.forEach((uni) => {
-      doc.text(` - ${uni.name} (${uni.code}) - Cutoff: ${uni.cutoff}`, 15, yOffset);
+      doc.text(
+        ` - ${uni.name} (${uni.code}) - Cutoff: ${uni.cutoff}`,
+        15,
+        yOffset
+      );
       yOffset += 6;
     });
 
@@ -112,20 +116,17 @@ const handleDownloadPDF = () => {
   doc.save("matched_courses.pdf");
 };
 
-const howToApplySteps = [
-  { icon: <LogIn className="w-4 h-4 text-indigo-600" />, text: "Go to the KUCCPS Student Portal." },
-  { icon: <ClipboardList className="w-4 h-4 text-indigo-600" />, text: "Log in using your KCSE Index Number and Password." },
-  { icon: <CheckCircle className="w-4 h-4 text-indigo-600" />, text: "Check your available courses based on your cluster points." },
-  { icon: <BookOpen className="w-4 h-4 text-indigo-600" />, text: "Use this platform to compare your performance with cutoffs." },
-  { icon: <ClipboardList className="w-4 h-4 text-indigo-600" />, text: "Choose courses that match your interest and performance." },
-  { icon: <CheckCircle className="w-4 h-4 text-indigo-600" />, text: "Apply and confirm your course choices on the KUCCPS portal." },
-];
-
 const Results = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [userQuery, setUserQuery] = useState('');
+
+  const closeModal = () => {
+    setSelectedCourse(null);
+    setUserQuery('');
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#dfe9f3] to-[#ffffff] px-6 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-[#dfe9f3] to-[#ffffff] px-6 py-16 relative">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: -40 }}
@@ -148,20 +149,30 @@ const Results = () => {
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">{result.emoji}</span>
-                <h3 className="text-xl font-semibold text-indigo-700">{result.course}</h3>
+                <h3 className="text-xl font-semibold text-indigo-700">
+                  {result.course}
+                </h3>
               </div>
-              <ul className="space-y-1 text-sm text-gray-700 pl-2">
+              <ul className="space-y-1 text-sm text-gray-700 pl-2 mb-4">
                 {result.universities.map((uni, i) => (
                   <li key={i}>
-                    {uni.name} <span className="text-gray-500">({uni.code})</span> — <span className="font-medium">Cutoff: {uni.cutoff}</span>
+                    {uni.name} <span className="text-gray-500">({uni.code})</span> —{" "}
+                    <span className="font-medium">Cutoff: {uni.cutoff}</span>
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={() => setSelectedCourse(result)}
+                className="mt-2 text-sm font-medium text-purple-600 hover:underline"
+              >
+                <MessageCircle className="inline w-4 h-4 mr-1" />
+                More Info
+              </button>
             </motion.div>
           ))}
         </div>
 
-        <div className="flex flex-wrap justify-center mt-12 gap-4">
+        <div className="flex justify-center mt-12">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -170,16 +181,6 @@ const Results = () => {
           >
             <Download className="w-5 h-5" />
             Download PDF
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:to-purple-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
-          >
-            <BookOpen className="w-5 h-5" />
-            How to Apply
           </motion.button>
         </div>
 
@@ -194,7 +195,7 @@ const Results = () => {
             href="mailto:support@example.com"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 text-indigo-800 font-semibold shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 11-12.728 0m0 0a9 9 0 0112.728 0zM12 8v4m0 4h.01" />
             </svg>
             Contact Support
@@ -202,39 +203,54 @@ const Results = () => {
         </div>
       </div>
 
-      {showModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={() => setShowModal(false)}
-        >
+      {/* AI Advisor Popup */}
+      <AnimatePresence>
+        {selectedCourse && (
           <motion.div
-            initial={{ scale: 0.9, y: 50 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.8, y: 50 }}
-            transition={{ duration: 0.3 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white/50 backdrop-blur-lg border border-white/30 shadow-2xl rounded-3xl p-6 max-w-lg w-full mx-4"
+            className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center px-4"
+            onClick={closeModal}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-indigo-800">How to Apply</h3>
-              <button onClick={() => setShowModal(false)} className="text-gray-600 hover:text-red-500 transition">
-                <X className="w-6 h-6" />
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 relative"
+            >
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition"
+              >
+                <X className="w-5 h-5" />
               </button>
-            </div>
-            <ul className="space-y-3 text-sm text-gray-800">
-              {howToApplySteps.map((step, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="mt-1">{step.icon}</span>
-                  <span>{step.text}</span>
-                </li>
-              ))}
-            </ul>
+              <h3 className="text-xl font-bold text-indigo-700 mb-2">
+                {selectedCourse.emoji} {selectedCourse.course}
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                This is a brief intro about {selectedCourse.course}. It’s a dynamic field with strong career potential in Kenya and globally.
+              </p>
+
+              <div className="space-y-2 mb-3">
+                <input
+                  type="text"
+                  value={userQuery}
+                  onChange={(e) => setUserQuery(e.target.value)}
+                  placeholder="Ask something about this course..."
+                  className="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
+                {userQuery && (
+                  <div className="bg-gray-100 p-3 rounded-xl text-sm text-gray-700 shadow-inner">
+                    <strong>AI Advisor:</strong> That’s a great question! {selectedCourse.course} is very versatile and leads to many opportunities like...
+                  </div>
+                )}
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 };
