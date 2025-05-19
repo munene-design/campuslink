@@ -30,7 +30,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="/enter-grades" className="hover:text-white">
+              <a href="/enter-grades"r className="hover:text-white">
                 Course Finder
               </a>
           

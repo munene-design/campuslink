@@ -50,6 +50,7 @@ function App() {
             <Route path="/enter-cluster" element={<ClusterWeightPage />} />
             <Route path="/enter-interest" element={<InterestSelectionPage />} />
             <Route path="/results" element={<Results />} />
+             <Route path="/Updates" element={<UpdatesSection />} />
           </Routes>
         </div>
 

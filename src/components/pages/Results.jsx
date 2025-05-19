@@ -3,6 +3,9 @@ import jsPDF from 'jspdf';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, BookOpen, MessageCircle,CheckCircle, LogIn, FileText, Sliders,  } from 'lucide-react';
 import AIAdvisor from '../AIAdvisor';
+import { useRef } from 'react';
+import html2canvas from 'html2canvas';
+
 
 const dummyResultsData = [
   {
@@ -88,41 +91,33 @@ const dummyResultsData = [
 ];
 
 
-const handleDownloadPDF = () => {
-  const doc = new jsPDF();
-  doc.setFontSize(16);
-  doc.text("Course Match Results", 10, 10);
-  let yOffset = 20;
-
-  dummyResultsData.forEach((result, idx) => {
-    doc.setFontSize(12);
-    doc.text(`${idx + 1}. ${result.course}`, 10, yOffset);
-    yOffset += 8;
-    result.universities.forEach((uni) => {
-      doc.text(` - ${uni.name} (${uni.code}) - Cutoff: ${uni.cutoff}`, 15, yOffset);
-      yOffset += 6;
-    });
-    yOffset += 6;
-    if (yOffset > 270) {
-      doc.addPage();
-      yOffset = 20;
-    }
-  });
-
-  doc.save("matched_courses.pdf");
-};
 
 const Results = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [messages, setMessages] = useState([]);
 const [currentInput, setCurrentInput] = useState('');
 const [showApplyPopup, setShowApplyPopup] = useState(false);
-
+const printRef = useRef();
   const closeModal = () => {
     setSelectedCourse(null);
    
   };
+ const handleDownloadStyledPDF = async () => {
+  window.scrollTo(0, 0);
+  const input = printRef.current;
+  const canvas = await html2canvas(input, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff"
+  });
 
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  pdf.save('matched_courses_styled.pdf');
+};
  
 
   return (
@@ -138,7 +133,7 @@ const [showApplyPopup, setShowApplyPopup] = useState(false);
           Matched Courses
         </motion.h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+       <div ref={printRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {dummyResultsData.map((result, index) => (
             <motion.div
               key={index}
@@ -173,10 +168,11 @@ const [showApplyPopup, setShowApplyPopup] = useState(false);
         </div>
 
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12">
+          
   <motion.button
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    onClick={handleDownloadPDF}
+    onClick={handleDownloadStyledPDF}
     className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
   >
     <Download className="w-5 h-5" />

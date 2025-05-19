@@ -19,11 +19,11 @@ const Navbar = () => {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-md text-red shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="text-2xl font-bold tracking-wide">SmartMatch 2025</div>
+          <div className="text-2xl font-bold tracking-wide">CampusLink 2025</div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 font-medium text-sm items-center">
-            <button onClick={() => scrollTo("updates")} className="hover:text-yellow-300 transition">Updates</button>
+            <button onClick={() => scrollTo("/Updates")} className="hover:text-yellow-300 transition">Updates</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-yellow-300 transition">FAQ</button>
             <button
               onClick={() => setContactPopup(true)}

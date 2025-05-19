@@ -18,7 +18,7 @@ const HeroSection = () => {
     <section className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-8 pb-8 bg-gradient-to-br from-[#2a5298] via-[#4c6ef5] to-[#6b48ff] text-white">
       {/* Subtle Background Image */}
  <div
-  className="absolute inset-0 bg-cover bg-center opacity-70 z-0"
+  className="absolute inset-0 bg-cover bg-center opacity-60 z-0"
   style={{
     backgroundImage: "url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')",
     filter: "brightness(0.9)"
@@ -34,7 +34,7 @@ const HeroSection = () => {
           data-aos="fade-down"
           data-aos-delay="100"
         >
-          🎯 KUCCPS 2025 Smart Course Matching
+          🎯 Welcome to Campuslink 2025 Smart Course Matching
         </h1>
         <p
           className="text-lg md:text-xl mb-8 font-light text-white/90 drop-shadow-sm"
