@@ -1,12 +1,12 @@
-
+// src/pages/Results.jsx
 import React, { useState, useRef, useEffect, useMemo, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, BookOpen, MessageCircle, CheckCircle, LogIn, FileText, Sliders, Search } from 'lucide-react';
+import { Download, BookOpen, MessageCircle, Search } from 'lucide-react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-
+import AIAdvisor from './AIAdvisor'; // Import the new component
 
 const dummyResultsData = [
   { course: "Medicine", emoji: "🩺", universities: [{ name: "University of Nairobi", code: "124513", cutoff: "42.7" }, { name: "Moi University", code: "125617", cutoff: "41.5" }] },
@@ -21,133 +21,36 @@ const dummyResultsData = [
   { course: "Journalism", emoji: "📰", universities: [{ name: "Multimedia University", code: "126300", cutoff: "36.0" }, { name: "Daystar University", code: "126099", cutoff: "35.8" }] },
 ];
 
-const AIAdvisor = ({ selectedCourse, closeModal, messages, setMessages, currentInput, setCurrentInput }) => {
-  const handleSend = () => {
-    if (currentInput.trim()) {
-      setMessages([...messages, `User: ${currentInput}`]);
-      setMessages((prev) => [...prev, `AI: Info about ${selectedCourse.course}...`]); // Placeholder response
-      setCurrentInput('');
-    }
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
-      role="dialog"
-      aria-label={`AI Advisor for ${selectedCourse.course}`}
-    >
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 50, opacity: 0 }}
-        className="relative w-full max-w-md bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-[5px_5px_10px_#d1d5db,-5px_-5px_10px_#ffffff] dark:shadow-none border border-gray-200 dark:border-gray-700"
-      >
-        <button
-          onClick={closeModal}
-          className="absolute top-4 right-4 text-2xl text-teal-700 dark:text-teal-300 hover:text-orange-500 dark:hover:text-orange-400 transition"
-          aria-label="Close AI Advisor"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h2 className="text-2xl font-bold text-teal-900 dark:text-teal-100 mb-4">{selectedCourse.course} Advisor</h2>
-        <div className="h-64 overflow-y-auto bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-          {messages.map((msg, i) => (
-            <p key={i} className="text-gray-800 dark:text-gray-200">{msg}</p>
-          ))}
-        </div>
-        <div className="mt-4 flex gap-2">
-          <input
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            placeholder="Ask about this course..."
-            className="flex-1 p-2 rounded-lg bg-white dark:bg-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400"
-            aria-label="Ask about this course"
-          />
-          <button
-            onClick={handleSend}
-            className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
-            aria-label="Send message"
-          >
-            Send
-          </button>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-AIAdvisor.propTypes = {
-  selectedCourse: PropTypes.shape({
-    course: PropTypes.string.isRequired,
-    emoji: PropTypes.string,
-    universities: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        code: PropTypes.string.isRequired,
-        cutoff: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-  }).isRequired,
-  closeModal: PropTypes.func.isRequired,
-  messages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setMessages: PropTypes.func.isRequired,
-  currentInput: PropTypes.string.isRequired,
-  setCurrentInput: PropTypes.func.isRequired,
-};
-
-
 const CourseCard = memo(({ result, index, setSelectedCourse }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
     whileHover={{
-      scale: 1.03, // Slightly more subtle scale
-      // rotateX: 3, // Optional: more subtle rotation or remove
-      // rotateY: 3, // Optional: more subtle rotation or remove
-      boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)', // Softer, more conventional hover shadow
+      scale: 1.03,
+      boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)',
     }}
-    className="rounded-xl bg-gray-50 dark:bg-gray-800 p-6 shadow-lg dark:shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-gray-200 dark:border-gray-700 transition-shadow duration-300" // Refined shadow
+    className="rounded-xl bg-gray-50 dark:bg-gray-800 p-6 shadow-lg dark:shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-gray-200 dark:border-gray-700 transition-shadow duration-300"
     role="article"
     aria-label={`Course card for ${result.course}`}
-    // Optional: Make the whole card clickable
-    // onClick={() => setSelectedCourse(result)}
-    // style={{ cursor: 'pointer' }} // Add if making the whole card clickable
   >
-    <div className="flex items-center gap-4 mb-6"> {/* Increased mb slightly for spacing */}
-      <span className="text-4xl">{result.emoji}</span> {/* Slightly larger emoji if desired */}
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100"> {/* Standard text color for title, let brand colors come from accents like teal below */}
-        {result.course}
-      </h3>
+    <div className="flex items-center gap-4 mb-6">
+      <span className="text-4xl">{result.emoji}</span>
+      <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{result.course}</h3>
     </div>
-
-    <div className="mb-6"> {/* Added a wrapper for better spacing control */}
-      <h4 className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-        Offered by:
-      </h4>
+    <div className="mb-6">
+      <h4 className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Offered by:</h4>
       <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
         {result.universities.map((uni, i) => (
-          <li key={uni.code || i} className="flex justify-between items-center"> {/* Use uni.code if unique, added items-center */}
-            <span className="truncate pr-2"> {/* Added truncate and pr for long names */}
-              {uni.name} <span className="text-gray-400 dark:text-gray-500">({uni.code})</span>
-            </span>
-            <span className="whitespace-nowrap font-medium text-orange-600 dark:text-orange-400"> {/* Added whitespace-nowrap */}
-              Cutoff: {uni.cutoff}
-            </span>
+          <li key={uni.code || i} className="flex justify-between items-center">
+            <span className="truncate pr-2">{uni.name} <span className="text-gray-400 dark:text-gray-500">({uni.code})</span></span>
+            <span className="whitespace-nowrap font-medium text-orange-600 dark:text-orange-400">Cutoff: {uni.cutoff}</span>
           </li>
         ))}
       </ul>
     </div>
-
     <button
-      onClick={(e) => {
-        // e.stopPropagation(); // Important if the parent div is also clickable
-        setSelectedCourse(result);
-      }}
+      onClick={() => setSelectedCourse(result)}
       className="mt-auto w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:bg-teal-500 dark:hover:bg-teal-600 dark:focus:ring-offset-gray-800 transition-all duration-200"
       aria-label={`More information about ${result.course}`}
     >
@@ -183,7 +86,7 @@ const Results = () => {
   const [currentInput, setCurrentInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isDownloading, setIsDownloading] = useState(false);
-  const [sortBy, setSortBy] = useState('name'); // 'name' or 'cutoff'
+  const [sortBy, setSortBy] = useState('name');
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
   const printRef = useRef();
@@ -192,14 +95,10 @@ const Results = () => {
     const fetchCourses = async () => {
       setIsLoading(true);
       try {
-        // Simulate API call; replace with actual endpoint
         setTimeout(() => {
           setCourses(dummyResultsData);
           setIsLoading(false);
         }, 1000);
-        // Example: const response = await fetch('/api/courses');
-        // const data = await response.json();
-        // setCourses(data);
       } catch (err) {
         setError('Failed to load courses. Please try again.');
         setIsLoading(false);
@@ -211,7 +110,7 @@ const Results = () => {
   const handleSearch = useCallback(
     debounce((value) => {
       setSearchQuery(value);
-      setCurrentPage(1); // Reset to first page on search
+      setCurrentPage(1);
     }, 300),
     []
   );
@@ -227,14 +126,13 @@ const Results = () => {
         )
     );
 
-    // Sort courses
     filtered.sort((a, b) => {
       if (sortBy === 'name') {
         return a.course.localeCompare(b.course);
       } else {
         const aCutoff = parseFloat(a.universities[0]?.cutoff || 0);
         const bCutoff = parseFloat(b.universities[0]?.cutoff || 0);
-        return bCutoff - aCutoff; // Descending order
+        return bCutoff - aCutoff;
       }
     });
 
@@ -330,7 +228,7 @@ const Results = () => {
         ) : (
           <div ref={printRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {paginatedCourses.map((result, index) => (
-              <CourseCard key={index} result={result} index={index} setSelectedCourse={setSelectedCourse} />
+              <CourseCard key={result.course} result={result} index={index} setSelectedCourse={setSelectedCourse} />
             ))}
           </div>
         )}
@@ -444,53 +342,27 @@ const Results = () => {
               >
                 <span aria-hidden="true">×</span>
               </button>
-              <h2 className="text-3xl font-bold text-center text-teal-900 dark:text-teal-100 mb-6 tracking-tight">
-                How to Apply on KUCCPS
-              </h2>
-              <ul className="space-y-4 text-base text-gray-700 dark:text-gray-200">
-                <li className="flex items-center gap-3">
-                  <LogIn className="text-orange-500 dark:text-orange-400" size={20} />
-                  Log in to your KUCCPS student portal.
-                </li>
-                <li className="flex items-center gap-3">
-                  <FileText className="text-orange-500 dark:text-orange-400" size={20} />
-                  Enter your KCSE index number in “Apply Now”.
-                </li>
-                <li className="flex items-center gap-3">
-                  <Sliders className="text-orange-500 dark:text-orange-400" size={20} />
-                  Input your 20 cluster weights.
-                </li>
-                <li className="flex items-center gap-3">
-                  <BookOpen className="text-orange-500 dark:text-orange-400" size={20} />
-                  Select preferred degree courses by priority.
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle className="text-orange-500 dark:text-orange-400" size={20} />
-                  Submit and confirm your application choices.
-                </li>
-                <li className="flex items-center gap-3">
-                  <Download className="text-orange-500 dark:text-orange-400" size={20} />
-                  Download the summary PDF for your records.
-                </li>
-              </ul>
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <a
-                  href="https://students.kuccps.net/login/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-teal-700 dark:text-teal-300 hover:text-orange-500 dark:hover:text-orange-400 font-semibold transition"
-                  aria-label="Visit KUCCPS portal"
-                >
-                  Go to KUCCPS Portal
-                </a>
+              <h2 className="text-2xl font-bold text-teal-900 dark:text-teal-100 mb-4">How to Apply on KUCCPS</h2>
+              <div className="text-gray-800 dark:text-gray-200 space-y-4">
+                <p>Follow these steps to apply for courses through the Kenya Universities and Colleges Central Placement Service (KUCCPS):</p>
+                <ol className="list-decimal list-inside space-y-2">
+                  <li>Visit the official KUCCPS portal at <a href="https://www.kuccps.ac.ke" target="_blank" rel="noopener noreferrer" className="text-teal-500 hover:underline">www.kuccps.ac.ke</a>.</li>
+                  <li>Create an account or log in using your KCSE index number and password.</li>
+                  <li>Select your preferred courses and universities based on your results and cut-off points.</li>
+                  <li>Submit your application before the deadline and pay the required application fee.</li>
+                  <li>Check your application status regularly for updates on placement.</li>
+                </ol>
+                <p>For more details, contact KUCCPS support or visit their official website.</p>
+              </div>
+              <div className="mt-6 flex justify-end">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowApplyPopup(false)}
-                  className="bg-gradient-to-r from-teal-500 to-orange-500 hover:from-orange-500 hover:to-teal-500 dark:from-teal-600 dark:to-orange-600 text-white font-semibold px-8 py-3 rounded-full shadow-md transition-all duration-300"
+                  className="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition"
                   aria-label="Close application guide"
                 >
-                  Got it!
+                  Close
                 </motion.button>
               </div>
             </motion.div>
