@@ -1,92 +1,129 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { X, Send } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Bot, X, Sparkles, Send } from 'lucide-react';
 
-const AIAdvisor = ({
-  selectedCourse,
-  closeModal,
-  messages,
-  setMessages,
-  currentInput,
-  setCurrentInput,
-}) => {
-  const handleSend = () => {
-    if (!currentInput.trim()) return;
+const AICourseAdvisor = ({ course, onClose }) => {
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      text: `Hi! I'm your course advisor for ${course.course}. Ask me anything about career paths, cutoffs, or university comparisons.`,
+      sender: 'ai'
+    }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-    const userMessage = { sender: 'user', text: currentInput.trim() };
-    const aiReply = {
-      sender: 'ai',
-      text: `Thanks for your question! Regarding "${currentInput.trim()}", here's what you should know...`,
-    };
-
-    setMessages((prev) => [...prev, userMessage, aiReply]);
-    setCurrentInput('');
+  const handleSend = async () => {
+    if (!input.trim()) return;
+    
+    // Add user message
+    const userMessage = { id: Date.now(), text: input, sender: 'user' };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+    
+    // Mock AI response - replace with real API call
+    setTimeout(() => {
+      const aiResponses = [
+        `For ${course.course}, the average starting salary is KES 120,000. ${course.universities[0].name} has particularly strong industry connections.`,
+        `The cutoff points for ${course.course} have been stable around ${course.universities[0].cutoff} for the past 3 years.`,
+        `Did you know ${course.course} graduates have a 92% employment rate within 6 months?`
+      ];
+      const aiMessage = { 
+        id: Date.now(), 
+        text: aiResponses[Math.floor(Math.random() * aiResponses.length)],
+        sender: 'ai' 
+      };
+      setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
-    <motion.div
-      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4"
-      onClick={closeModal}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <AnimatePresence>
       <motion.div
-        onClick={(e) => e.stopPropagation()}
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.8, opacity: 0 }}
-        className="bg-white/30 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl max-w-lg w-full p-6 relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm"
       >
-        <button
-          onClick={closeModal}
-          className="absolute top-4 right-4 text-white hover:text-red-400 transition"
+        <motion.div 
+          initial={{ y: 50, scale: 0.95 }}
+          animate={{ y: 0, scale: 1 }}
+          className="relative w-full max-w-md h-[80vh] bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex flex-col"
         >
-          <X className="w-5 h-5" />
-        </button>
-
-        <h3 className="text-xl font-bold text-white mb-2">
-          {selectedCourse.emoji} {selectedCourse.course}
-        </h3>
-        <p className="text-sm text-white/80 mb-4">
-          Curious about <strong>{selectedCourse.course}</strong>? Ask your question below to get personalized insights from our AI assistant.
-        </p>
-
-        <div className="space-y-3">
-          <div className="bg-white/90 p-3 h-48 overflow-y-auto rounded-xl shadow-inner text-sm text-gray-800 border border-purple-200 space-y-2">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-2 rounded-xl max-w-[85%] ${
-                  msg.sender === 'user'
-                    ? 'bg-indigo-100 text-indigo-800 self-end ml-auto'
-                    : 'bg-purple-100 text-purple-800'
-                }`}
-              >
-                <strong>{msg.sender === 'user' ? 'You' : 'AI'}:</strong> {msg.text}
+          {/* Header */}
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-full">
+                <Bot className="text-indigo-600 dark:text-indigo-300" size={20} />
               </div>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={currentInput}
-              onChange={(e) => setCurrentInput(e.target.value)}
-              placeholder="Type your question..."
-              className="flex-1 bg-white/90 text-sm text-gray-800 placeholder:text-gray-500 border-none rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
-            />
-            <button
-              onClick={handleSend}
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl p-2 transition"
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                {course.course} Advisor
+              </h3>
+            </div>
+            <button 
+              onClick={onClose}
+              className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <Send className="w-4 h-4" />
+              <X size={20} />
             </button>
           </div>
-        </div>
+
+          {/* Chat Container */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-4">
+            {messages.map((msg) => (
+              <div 
+                key={msg.id} 
+                className={`flex ${msg.sender === 'ai' ? 'justify-start' : 'justify-end'}`}
+              >
+                <div 
+                  className={`max-w-[80%] p-3 rounded-2xl ${msg.sender === 'ai' 
+                    ? 'bg-indigo-50 dark:bg-gray-700 rounded-tl-none' 
+                    : 'bg-indigo-600 text-white rounded-tr-none'}`}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="p-3 bg-indigo-50 dark:bg-gray-700 rounded-2xl rounded-tl-none">
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 rounded-full bg-indigo-300 animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-indigo-300 animate-bounce delay-100"></div>
+                    <div className="w-2 h-2 rounded-full bg-indigo-300 animate-bounce delay-200"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Input Area */}
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="relative">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                placeholder={`Ask about ${course.course}...`}
+                className="w-full p-3 pr-12 bg-gray-100 dark:bg-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                onClick={handleSend}
+                disabled={!input.trim()}
+                className="absolute right-3 top-3 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
+              >
+                <Send />
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
+              <Sparkles size={14} />
+              AI-powered course advisor
+            </p>
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimatePresence>
   );
 };
-
-export default AIAdvisor;

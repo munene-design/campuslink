@@ -18,7 +18,7 @@ import Footer from "./components/Footer";
 import GradesPage from "./components/pages/GradesPage";
 import ClusterWeightPage from "./components/pages/ClusterWeightPage";
 import InterestSelectionPage from "./components/pages/InterestSelectionPage";
-import Results from "./components/pages/Results"; // ✅ Results Page
+import ResultsPage from "./components/pages/ResultsPage"; // ✅ Results Page
 
 function App() {
   useEffect(() => {
@@ -49,7 +49,7 @@ function App() {
             <Route path="/enter-grades" element={<GradesPage />} />
             <Route path="/enter-cluster" element={<ClusterWeightPage />} />
             <Route path="/enter-interest" element={<InterestSelectionPage />} />
-            <Route path="/results" element={<Results />} />
+            <Route path="/results" element={<ResultsPage />} />
              <Route path="/Updates" element={<UpdatesSection />} />
           </Routes>
         </div>
