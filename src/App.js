@@ -14,11 +14,11 @@ import FAQSection from "./components/FAQSection";
 import FloatingActions from "./components/FloatingActions";
 import Footer from "./components/Footer";
 
-// Pages
+// Pages 
 import GradesPage from "./components/pages/GradesPage";
 import ClusterWeightPage from "./components/pages/ClusterWeightPage";
 import InterestSelectionPage from "./components/pages/InterestSelectionPage";
-import ResultsPage from "./components/pages/ResultsPage"; // ✅ Results Page
+import ResultsPage from "./components/pages/ResultsPage";
 
 function App() {
   useEffect(() => {
@@ -29,7 +29,7 @@ function App() {
     <Router>
       <ScrollToTop /> {/* ✅ Smooth scroll to top on route change */}
       <div className="font-sans bg-gray-50 text-gray-800 scroll-smooth min-h-screen">
-        <Navbar /> {/* ✅ Fixed Navbar */}
+        <Navbar /> 
 
         <div className="pt-20"> {/* ✅ Add padding to avoid overlap with fixed Navbar */}
           <Routes>
