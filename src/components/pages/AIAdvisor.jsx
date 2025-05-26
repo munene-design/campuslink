@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 
 // Custom hook to detect if the screen is at or above a breakpoint (e.g., Tailwind's 'sm')
-const useBreakpoint = (breakpointValue = 640) => { // Default to Tailwind's sm breakpoint
+const useBreakpoint = (breakpointValue = 640) => {
   const [isAboveBreakpoint, setIsAboveBreakpoint] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= breakpointValue : false
   );
@@ -18,8 +18,7 @@ const useBreakpoint = (breakpointValue = 640) => { // Default to Tailwind's sm b
     };
 
     window.addEventListener('resize', handleResize);
-    // Call handler right away so state gets updated with initial window size
-    handleResize();
+    handleResize(); // Initial check
     
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -31,20 +30,30 @@ const useBreakpoint = (breakpointValue = 640) => { // Default to Tailwind's sm b
 
 
 const AIAdvisor = ({ selectedCourse, closeModal }) => {
-  const isSmAndUp = useBreakpoint(640); // Use Tailwind's 'sm' breakpoint (640px)
+  const isSmAndUp = useBreakpoint(640);
 
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: `Greetings! I am your ${selectedCourse.course} CampusLink Advisor. I can illuminate your path regarding:\n• Celestial Cutoffs (Points)\n• Galactic Career Trajectories\n• University Constellations (Comparisons)\n• Stellar Course Requirements`,
-      sender: 'ai'
-    }
-  ]);
+  const [messages, setMessages] = useState([]); // Initialize with empty array
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Effect to set the initial welcome message when selectedCourse is available or changes
+  useEffect(() => {
+    if (selectedCourse && selectedCourse.course) {
+      setMessages([
+        {
+          id: Date.now(), // Use a dynamic ID
+          text: `Greetings! I am your ${selectedCourse.course} CampusLink Advisor. I can illuminate your path regarding:\n• Celestial Cutoffs (Points)\n• Galactic Career Trajectories\n• University Constellations (Comparisons)\n• Stellar Course Requirements`,
+          sender: 'ai'
+        }
+      ]);
+      setInput(''); // Clear input when a new course is selected/modal opens
+    } else {
+      setMessages([]); // Clear messages if no course is selected
+    }
+  }, [selectedCourse]); // Re-run when selectedCourse changes
+
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !selectedCourse) return; // Added check for selectedCourse
 
     const userMessage = {
       id: Date.now(),
@@ -56,7 +65,6 @@ const AIAdvisor = ({ selectedCourse, closeModal }) => {
     setIsLoading(true);
 
     setTimeout(() => {
-      // Ensure selectedCourse and its properties exist before trying to access them
       const uni1Cutoff = selectedCourse?.universities?.[0]?.cutoff || "N/A";
       const uni2Cutoff = selectedCourse?.universities?.[1]?.cutoff || "N/A";
       const careerPathsText = selectedCourse?.careerPaths?.join(', ') || 'explorers in diverse industries';
@@ -64,7 +72,6 @@ const AIAdvisor = ({ selectedCourse, closeModal }) => {
       const uni2Fees = selectedCourse?.universities?.[1]?.fees || "N/A";
       const durationText = selectedCourse?.duration || "an enlightening";
       const demandText = selectedCourse?.demand || "significant";
-
 
       const responses = {
         "cutoff": `The celestial alignment for ${selectedCourse.course} typically requires between ${uni1Cutoff} and ${uni2Cutoff} points. Top voyagers often score A- or higher.`,
@@ -98,37 +105,58 @@ const AIAdvisor = ({ selectedCourse, closeModal }) => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
+  // Animation for the modal to "float" in the center
+  const floatingModalAnimation = {
+    initial: { opacity: 0, scale: 0.90, y: 10 }, // Start slightly scaled down and below center
+    animate: { opacity: 1, scale: 1, y: 0 },    // Animate to full scale and centered
+    exit:    { opacity: 0, scale: 0.90, y: 10 }, // Exit similarly
+    transition: { 
+      type: "tween", 
+      ease: [0.22, 1, 0.36, 1], // Sharp, responsive custom Bézier curve
+      duration: 0.4             // Quick duration
+    }
+  };
+  
+  if (!selectedCourse) { // Don't render if no course is selected yet
+    return null;
+  }
+
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-lg"
+        transition={{duration: 0.3}} // Backdrop fade
+        // Backdrop: Always center content, consistent padding
+        className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-lg"
       >
         <motion.div
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          exit={{ y: "100%", opacity: 0 }}
-          transition={{ type: "spring", stiffness: 350, damping: 35 }}
-          className="relative w-full max-w-full sm:max-w-lg h-auto max-h-[95vh] sm:h-auto sm:max-h-[85vh] bg-gradient-to-br from-slate-900 to-indigo-950 rounded-t-3xl sm:rounded-3xl shadow-2xl shadow-indigo-500/40 flex flex-col border-t border-x sm:border border-indigo-700/60 overflow-hidden"
+          initial={floatingModalAnimation.initial}
+          animate={floatingModalAnimation.animate}
+          exit={floatingModalAnimation.exit}
+          transition={floatingModalAnimation.transition}
+          // Dialog: Floating effect with margins, consistent rounding and border
+          className="relative w-full max-w-[90vw] sm:max-w-md md:max-w-lg h-auto max-h-[90vh] sm:max-h-[85vh] bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl sm:rounded-3xl shadow-2xl shadow-indigo-500/40 flex flex-col border border-indigo-700/50 overflow-hidden"
         >
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-indigo-700/50 flex items-center justify-between bg-black/30 flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg">
+            <div className="flex items-center gap-3 min-w-0"> {/* Added min-w-0 for text truncation */}
+              <div className="p-2 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg flex-shrink-0">
                 <Sparkles className="text-yellow-300" size={isSmAndUp ? 24 : 20} />
               </div>
-              <div>
-                <h3 className="font-bold text-md sm:text-lg text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400">{selectedCourse.course} CampusLink Advisor</h3>
-                <p className="text-xs text-indigo-300/70">Making sense of your studies </p>
+              <div className="min-w-0"> {/* Added min-w-0 for text truncation */}
+                <h3 className="font-bold text-md sm:text-lg text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 truncate">
+                  {selectedCourse.course} CampusLink Advisor
+                </h3>
+                <p className="text-xs text-indigo-300/70 truncate">Making sense of your studies</p>
               </div>
             </div>
             <motion.button
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
               onClick={closeModal}
-              className="p-1.5 rounded-full text-indigo-300/70 hover:bg-indigo-700/50 hover:text-indigo-100 transition-colors"
+              className="p-1.5 rounded-full text-indigo-300/70 hover:bg-indigo-700/50 hover:text-indigo-100 transition-colors flex-shrink-0 ml-2"
               aria-label="Close advisor"
             >
               <X size={isSmAndUp ? 22 : 20} />
@@ -151,12 +179,12 @@ const AIAdvisor = ({ selectedCourse, closeModal }) => {
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] p-3 sm:p-3.5 shadow-md text-xs sm:text-sm ${msg.sender === 'ai'
+                  className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-3.5 shadow-md text-xs sm:text-sm ${msg.sender === 'ai'
                     ? 'bg-indigo-800/70 text-indigo-100 rounded-2xl rounded-bl-md backdrop-blur-sm border border-indigo-600/30'
                     : 'bg-gradient-to-br from-pink-600 to-purple-700 text-white rounded-2xl rounded-br-md'}`}
                 >
                   {msg.text.split('\n').map((line, i) => (
-                    <p key={i} className={`${i > 0 ? 'mt-1.5 sm:mt-2' : ''} leading-relaxed`}>{line}</p>
+                    <p key={i} className={`${i > 0 ? 'mt-1.5 sm:mt-2' : ''} leading-relaxed break-words`}>{line}</p>
                   ))}
                 </div>
               </motion.div>
