@@ -8,6 +8,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import AIAdvisor from './AIAdvisor'; // Import the new component
 
+
 const dummyResultsData = [
   { course: "Medicine", emoji: "🩺", universities: [{ name: "University of Nairobi", code: "124513", cutoff: "42.7" }, { name: "Moi University", code: "125617", cutoff: "41.5" }] },
   { course: "Law", emoji: "⚖", universities: [{ name: "Kenyatta University", code: "124789", cutoff: "39.2" }, { name: "Strathmore University", code: "126212", cutoff: "40.0" }] },
@@ -21,44 +22,74 @@ const dummyResultsData = [
   { course: "Journalism", emoji: "📰", universities: [{ name: "Multimedia University", code: "126300", cutoff: "36.0" }, { name: "Daystar University", code: "126099", cutoff: "35.8" }] },
 ];
 
-const CourseCard = memo(({ result, index, setSelectedCourse }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
-    whileHover={{
-      scale: 1.03,
-      boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)',
-    }}
-    className="rounded-xl bg-gray-50 dark:bg-gray-800 p-6 shadow-lg dark:shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-gray-200 dark:border-gray-700 transition-shadow duration-300"
-    role="article"
-    aria-label={`Course card for ${result.course}`}
-  >
-    <div className="flex items-center gap-4 mb-6">
-      <span className="text-4xl">{result.emoji}</span>
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{result.course}</h3>
-    </div>
-    <div className="mb-6">
-      <h4 className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Offered by:</h4>
-      <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-        {result.universities.map((uni, i) => (
-          <li key={uni.code || i} className="flex justify-between items-center">
-            <span className="truncate pr-2">{uni.name} <span className="text-gray-400 dark:text-gray-500">({uni.code})</span></span>
-            <span className="whitespace-nowrap font-medium text-orange-600 dark:text-orange-400">Cutoff: {uni.cutoff}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-    <button
-      onClick={() => setSelectedCourse(result)}
-      className="mt-auto w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:bg-teal-500 dark:hover:bg-teal-600 dark:focus:ring-offset-gray-800 transition-all duration-200"
-      aria-label={`More information about ${result.course}`}
+const CourseCard = memo(({ result, index, setSelectedCourse }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: 'easeOut' }}
+      whileHover={{
+        scale: 1.03,
+        // A more complex shadow for depth:
+        boxShadow: '0px 15px 35px -5px rgba(0, 0, 0, 0.15), 0px 8px 15px -10px rgba(0, 0, 0, 0.1)',
+      }}
+      className="group rounded-2xl bg-white dark:bg-gray-800 p-6 overflow-hidden relative transition-all duration-300 ease-out border border-gray-200 dark:border-gray-700/50"
+      role="article"
+      aria-label={`Course card for ${result.course}`}
     >
-      <MessageCircle className="w-4 h-4" />
-      More Info
-    </button>
-  </motion.div>
-));
+      {/* Optional: Subtle decorative gradient glow on hover (absolute positioned) */}
+      <div className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-gradient-radial from-teal-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 dark:from-teal-400/10"></div>
+
+      <div className="relative z-10"> {/* Content above the glow */}
+        <div className="flex items-start gap-4 mb-5">
+          <div className="mt-1 p-3 bg-teal-100 dark:bg-teal-700/50 rounded-xl text-3xl">
+            {result.emoji}
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">
+              {result.course}
+            </h3>
+            <p className="text-xs text-teal-600 dark:text-teal-400 font-medium">University Options Available</p>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h4 className="mb-3 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 tracking-wider">
+            Offered by
+          </h4>
+          <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300">
+            {result.universities.slice(0, 2).map((uni, i) => ( // Show only top 2 for brevity, or more if design allows
+              <li key={uni.code || i} className="flex justify-between items-center">
+                <span className="truncate pr-2">
+                  {uni.name} <span className="text-gray-400 dark:text-gray-500 text-xs">({uni.code})</span>
+                </span>
+                <span className="whitespace-nowrap font-semibold text-sm text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-500/20 px-2 py-0.5 rounded-full">
+                  {uni.cutoff}
+                </span>
+              </li>
+            ))}
+            {result.universities.length > 2 && (
+                 <li className="text-xs text-gray-500 dark:text-gray-400 pt-1">
+                    + {result.universities.length - 2} more universit{result.universities.length - 2 > 1 ? 'ies' : 'y'}
+                 </li>
+            )}
+          </ul>
+        </div>
+
+        <motion.button
+          onClick={() => setSelectedCourse(result)}
+          className="w-full flex items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:bg-teal-500 dark:hover:bg-teal-600 dark:focus:ring-offset-gray-800 transition-all duration-200 group-hover:shadow-lg group-hover:shadow-teal-500/30"
+          aria-label={`More information about ${result.course}`}
+          whileHover={{ y: -2 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
+          <MessageCircle className="w-4 h-4" />
+          Explore Details
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+});
 
 CourseCard.propTypes = {
   result: PropTypes.shape({
