@@ -259,7 +259,7 @@ const InterestSelectionPage = () => {
                 whileTap={{ scale: 0.96, y: 0 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 10 }}
               >
-                Explore Options
+                Find Your Fit
               </motion.button>
             </motion.div>
           )}
@@ -271,13 +271,4 @@ const InterestSelectionPage = () => {
 
 export default InterestSelectionPage;
 
-// Remember to install @tailwindcss/line-clamp if you use line-clamp utilities:
-// npm install -D @tailwindcss/line-clamp
-// And add to tailwind.config.js:
-// plugins: [require('@tailwindcss/line-clamp')],
 
-// Ensure 'Inter' font is imported (e.g., in your index.css or App.js):
-// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-// body { font-family: 'Inter', sans-serif; @apply antialiased; }
-
-// Note on `light-blue-400` for Music: If not a default Tailwind color, define it in your tailwind.config.js theme.extend.colors
