@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes, FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactPopup, setContactPopup] = useState(false);
+  const [dynamicText, setDynamicText] = useState("CampusLink");
+  const fullText = "CampusLink 2025";
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const typingInterval = setInterval(() => {
+      setDynamicText(fullText.slice(0, index + 1));
+      setIndex((prev) => {
+        if (prev < fullText.length - 1) return prev + 1;
+        else return 0;
+      });
+    }, 200);
+
+    return () => clearInterval(typingInterval);
+  }, [index]);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -23,14 +38,13 @@ const Navbar = () => {
             className="text-2xl font-bold bg-gradient-to-r from-yellow-300 to-pink-500 text-transparent bg-clip-text tracking-wider"
             whileHover={{ scale: 1.05 }}
           >
-            CampusLink 2025
+            {dynamicText}
           </motion.div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-10 font-semibold text-base items-center text-gray-800">
-  <button onClick={() => scrollTo("updates")} className="hover:text-yellow-500 transition">Updates</button>
-  <button onClick={() => scrollTo("faq")} className="hover:text-yellow-500 transition">FAQ</button>
-
+            <button onClick={() => scrollTo("updates")} className="hover:text-yellow-500 transition">Updates</button>
+            <button onClick={() => scrollTo("faq")} className="hover:text-yellow-500 transition">FAQ</button>
             <button
               onClick={() => setContactPopup(true)}
               className="bg-yellow-400 text-black px-5 py-2 rounded-full font-semibold hover:bg-yellow-300 transition shadow-md"
