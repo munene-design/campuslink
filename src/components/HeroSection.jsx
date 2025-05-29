@@ -161,6 +161,21 @@ const HeroSection = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <a
+  href="#next-section"
+  className="absolute bottom-5 left-1/2 transform -translate-x-1/2 animate-bounce"
+>
+  <svg
+    className="w-6 h-6 text-white"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+</a>
+
     </section>
   );
 };

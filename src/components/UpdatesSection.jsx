@@ -22,7 +22,7 @@ const updates = [
 
 export default function UpdatesSection() {
   return (
-    <section className="bg-gradient-to-br from-white via-blue-50 to-blue-100 py-16 px-6">
+    <section className="bg-gradient-to-br from-white via-blue-50 to-blue-100 py-16 px-6" id="next-section">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-gray-800 mb-6">
           <span className="inline-block mr-2 text-blue-600">
