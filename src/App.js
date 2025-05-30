@@ -31,7 +31,7 @@ function App() {
       <div className="font-sans bg-gray-50 text-gray-800 scroll-smooth min-h-screen">
         <Navbar /> 
 
-        <div className="pt-20"> {/* ✅ Add padding to avoid overlap with fixed Navbar */}
+        <div className="pt-10" > {/* ✅ Add padding to avoid overlap with fixed Navbar */}
           <Routes>
             <Route
               path="/"

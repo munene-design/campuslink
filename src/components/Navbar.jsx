@@ -10,16 +10,15 @@ const Navbar = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const typingInterval = setInterval(() => {
-      setDynamicText(fullText.slice(0, index + 1));
-      setIndex((prev) => {
-        if (prev < fullText.length - 1) return prev + 1;
-        else return 0;
-      });
-    }, 200);
-
-    return () => clearInterval(typingInterval);
-  }, [index]);
+  const typingInterval = setInterval(() => {
+    setIndex((prev) => {
+      const next = prev < fullText.length - 1 ? prev + 1 : 0;
+      setDynamicText(fullText.slice(0, next + 1));
+      return next;
+    });
+  }, 300);
+  return () => clearInterval(typingInterval);
+}, []);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -32,62 +31,73 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b border-white/20 shadow-lg text-white">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <motion.div
-            className="text-2xl font-bold bg-gradient-to-r from-yellow-300 to-pink-500 text-transparent bg-clip-text tracking-wider"
-            whileHover={{ scale: 1.05 }}
-          >
-            {dynamicText}
-          </motion.div>
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-md text-white">
+  <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+    <motion.div
+      className="text-xl font-extrabold bg-gradient-to-r from-yellow-300 to-pink-500 text-transparent bg-clip-text tracking-wide cursor-pointer"
+      whileHover={{ scale: 1.05 }}
+    >
+      {dynamicText}
+    </motion.div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-10 font-semibold text-base items-center text-gray-800">
-            <button onClick={() => scrollTo("updates")} className="hover:text-yellow-500 transition">Updates</button>
-            <button onClick={() => scrollTo("faq")} className="hover:text-yellow-500 transition">FAQ</button>
-            <button
-              onClick={() => setContactPopup(true)}
-              className="bg-yellow-400 text-black px-5 py-2 rounded-full font-semibold hover:bg-yellow-300 transition shadow-md"
-            >
-              Contact Us
-            </button>
-          </div>
+    {/* Desktop Menu */}
+    <div className="hidden md:flex space-x-8 font-medium text-sm items-center text-gray-800">
+      <button onClick={() => scrollTo("updates")} className="hover:text-yellow-500 transition duration-200">
+        Updates
+      </button>
+      <button onClick={() => scrollTo("faq")} className="hover:text-yellow-500 transition duration-200">
+        FAQ
+      </button>
+      <button
+        onClick={() => setContactPopup(true)}
+        className="bg-yellow-400 text-black px-4 py-1.5 rounded-full font-medium hover:bg-yellow-300 transition duration-200 shadow-sm"
+      >
+        Contact Us
+      </button>
+    </div>
 
-          {/* Hamburger Icon */}
-          <motion.button
-            className="md:hidden text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-            whileTap={{ scale: 0.9, rotate: 90 }}
-          >
-            {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-          </motion.button>
-        </div>
+    {/* Hamburger Icon */}
+    <motion.button
+  className="md:hidden bg-white/80 text-gray-900 p-2 rounded-full shadow"
+  onClick={() => setMenuOpen(!menuOpen)}
+  whileTap={{ scale: 0.9, rotate: 90 }}
+>
+  {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+</motion.button>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: "auto" }}
-              exit={{ height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden px-6 pb-4 space-y-3 text-base bg-white/10 backdrop-blur-lg text-white"
-            >
-              <button onClick={() => scrollTo("updates")} className="block w-full text-left hover:text-yellow-300">Updates</button>
-              <button onClick={() => scrollTo("faq")} className="block w-full text-left hover:text-yellow-300">FAQ</button>
-              <button
-                onClick={() => {
-                  setContactPopup(true);
-                  setMenuOpen(false);
-                }}
-                className="block w-full text-left text-yellow-400 font-semibold"
-              >
-                Contact Us
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+
+  </div>
+
+  {/* Mobile Menu */}
+  <AnimatePresence>
+    {menuOpen && (
+      <motion.div
+        initial={{ height: 0 }}
+        animate={{ height: "auto" }}
+        exit={{ height: 0 }}
+        transition={{ duration: 0.25 }}
+        className="md:hidden overflow-hidden px-6 pb-4 space-y-2 text-sm bg-white/10 backdrop-blur-lg text-white"
+      >
+        <button onClick={() => scrollTo("updates")} className="block w-full text-left hover:text-yellow-300 transition">
+          Updates
+        </button>
+        <button onClick={() => scrollTo("faq")} className="block w-full text-left hover:text-yellow-300 transition">
+          FAQ
+        </button>
+        <button
+          onClick={() => {
+            setContactPopup(true);
+            setMenuOpen(false);
+          }}
+          className="block w-full text-left text-yellow-400 font-semibold"
+        >
+          Contact Us
+        </button>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</nav>
+
 
       {/* Contact Popup */}
       <AnimatePresence>
