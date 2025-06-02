@@ -62,7 +62,7 @@ const HeroSection = () => {
 
   return (
     <motion.section
-      className="relative h-screen min-h-[750px] flex items-center justify-center overflow-hidden p-4 sm:p-6 animated-gradient-bg" // Applied animated gradient class
+      className="relative h-screen min-h-[600px] sm:min-h-[680px] md:min-h-[750px] flex items-center justify-center overflow-hidden p-4 sm:p-6 animated-gradient-bg" // UPDATED: Responsive min-height
       initial="hidden"
       animate="visible"
       variants={heroContainerVariants}
@@ -71,19 +71,19 @@ const HeroSection = () => {
       {/* <div className="absolute inset-0 z-0 opacity-10"> SVG_Pattern_Here </div> */}
 
       <motion.div
-        className="relative z-10 max-w-5xl w-full mx-auto text-center bg-white/60 backdrop-blur-xl border border-white/50 rounded-[40px] shadow-2xl shadow-pink-500/20 p-8 sm:p-12 md:p-16" // Brighter glassmorphism, softer shadow, more rounded
+        className="relative z-10 max-w-5xl w-full mx-auto text-center bg-white/60 backdrop-blur-xl border border-white/50 rounded-[40px] shadow-2xl shadow-pink-500/20 p-6 sm:p-10 md:p-16" // UPDATED: Responsive padding
         variants={itemVariants} 
       >
         <motion.h1
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6 flex items-center justify-center gap-x-3 sm:gap-x-4 leading-tight
-                     text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" // More vibrant title gradient
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold mb-4 sm:mb-6 flex items-center justify-center gap-x-3 sm:gap-x-4 leading-tight
+                     text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" // UPDATED: Responsive text size and margin
           variants={titleItemVariants}
         >
-          <Target className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 flex-shrink-0 text-purple-600" /> {/* Added color to icon */}
+          <Target className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 flex-shrink-0 text-purple-600" />
           CampusLink
         </motion.h1>
         <motion.p
-          className="text-lg sm:text-xl md:text-2xl mb-10 sm:mb-12 font-medium text-slate-700 max-w-3xl mx-auto leading-relaxed" // Darker text for readability
+          className="text-base sm:text-xl md:text-2xl mb-8 sm:mb-12 font-medium text-slate-700 max-w-3xl mx-auto leading-relaxed" // UPDATED: Responsive text size and margin
           variants={itemVariants}
         >
           Unlock your academic future. We provide precise course recommendations for 2025, tailored to your grades and aspirations.
@@ -103,7 +103,6 @@ const HeroSection = () => {
           <button
             onClick={() => setShowHowItWorks(true)}
             className="group flex items-center justify-center gap-2.5 border-2 border-purple-500 text-purple-600 py-3 sm:py-[14px] px-8 sm:px-10 rounded-full font-semibold hover:bg-purple-500 hover:text-white hover:border-purple-600 transition-all duration-300 transform hover:scale-[1.05] text-base md:text-lg focus:outline-none focus:ring-4 focus:ring-purple-500/40"
-            // Brighter secondary button
           >
             <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ease-out group-hover:rotate-[25deg] group-hover:scale-110" />
             How It Works
@@ -114,13 +113,13 @@ const HeroSection = () => {
       <AnimatePresence>
         {showHowItWorks && (
           <motion.div
-            className="fixed inset-0 flex items-center justify-center z-50 bg-slate-900/30 backdrop-blur-lg p-4" // Slightly darker overlay blur
+            className="fixed inset-0 flex items-center justify-center z-50 bg-slate-900/30 backdrop-blur-lg p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: {duration: 0.35, ease: "easeOut"}}}
             exit={{ opacity: 0, transition: {duration: 0.25, ease: "easeIn"}}}
           >
             <motion.div
-              className="bg-white/90 backdrop-blur-2xl max-w-xl w-full p-7 sm:p-8 rounded-xl shadow-2xl relative border border-slate-300 text-slate-800" // Brighter modal with subtle border
+              className="bg-white/90 backdrop-blur-2xl max-w-xl w-full p-7 sm:p-8 rounded-xl shadow-2xl relative border border-slate-300 text-slate-800"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
@@ -150,7 +149,7 @@ const HeroSection = () => {
                 ].map((item, i) => (
                   <motion.li
                     key={i}
-                    className="flex items-start gap-4 bg-white/50 border-l-4 border-sky-500 p-4 rounded-lg shadow-md hover:bg-white/80 hover:shadow-lg hover:border-sky-400 transition-all duration-200" // Brighter list items
+                    className="flex items-start gap-4 bg-white/50 border-l-4 border-sky-500 p-4 rounded-lg shadow-md hover:bg-white/80 hover:shadow-lg hover:border-sky-400 transition-all duration-200"
                     custom={i}
                     variants={listItemVariants}
                   >
@@ -177,10 +176,10 @@ const HeroSection = () => {
       <motion.a
         href="#next-section" 
         aria-label="Scroll to next section"
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 p-2.5 rounded-full text-purple-600 hover:text-pink-600 hover:bg-white/50 transition-all duration-300" // Brighter scroll indicator
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 p-2.5 rounded-full text-purple-600 hover:text-pink-600 hover:bg-white/50 transition-all duration-300"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 1.2, type: "spring", stiffness: 70 }} // Slightly delayed for content focus
+        transition={{ delay: 1.8, duration: 1.2, type: "spring", stiffness: 70 }}
         whileHover={{ scale: 1.15, y: -6 }}
         whileTap={{ scale: 0.95 }}
       >
