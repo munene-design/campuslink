@@ -8,7 +8,6 @@ import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop"; // ✅ New
 import HeroSection from "./components/HeroSection";
 import UpdatesSection from "./components/UpdatesSection";
-import CTASection from "./components/CTASection";
 import EmailSignup from "./components/EmailSignup";
 import FAQSection from "./components/FAQSection";
 import FloatingActions from "./components/FloatingActions";
@@ -39,7 +38,7 @@ function App() {
                 <>
                   <HeroSection />
                   <UpdatesSection />
-                  <CTASection />
+                  
                   <EmailSignup />
                   <FAQSection />
                   <Footer /> {/* ✅ Included only on landing */}
