@@ -141,7 +141,7 @@ const InterestSelectionPage = () => {
           className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tighter text-center mb-10 sm:mb-12 md:mb-16"
         >
           <ShimmerText className="bg-clip-text text-transparent bg-gradient-to-br from-purple-400 via-pink-400 to-cyan-400">
-            Pathfinder: What Interests You?
+            Chart Your Course
           </ShimmerText>
         </motion.h1>
 
@@ -259,7 +259,7 @@ const InterestSelectionPage = () => {
                 whileTap={{ scale: 0.96, y: 0 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 10 }}
               >
-                Find Your Fit
+                Explore Options
               </motion.button>
             </motion.div>
           )}
@@ -271,4 +271,14 @@ const InterestSelectionPage = () => {
 
 export default InterestSelectionPage;
 
+// Remember to install @tailwindcss/line-clamp if you use line-clamp utilities:
+// npm install -D @tailwindcss/line-clamp
+// And add to tailwind.config.js:
+// plugins: [require('@tailwindcss/line-clamp')],
+
+// Ensure 'Inter' font is imported (e.g., in your index.css or App.js):
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+// body { font-family: 'Inter', sans-serif; @apply antialiased; }
+
+// Note on `light-blue-400` for Music: If not a default Tailwind color, define it in your tailwind.config.js theme.extend.colors
 

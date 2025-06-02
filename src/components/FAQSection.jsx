@@ -32,7 +32,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6">
+    <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6" id="faq">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
