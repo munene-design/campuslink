@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Target, BookOpen, HelpCircle, Search, CheckCircle, Zap, UserCheck, Award, X as LucideX, ArrowDown } from "lucide-react";
+import { Target, BookOpen, HelpCircle, Search, CheckCircle, Zap, UserCheck, Award, X as LucideX, ArrowDown, ChevronDown } from "lucide-react"; // Added ChevronDown as an option
 import { motion, AnimatePresence } from 'framer-motion';
 
 const HeroSection = () => {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
 
-  // Main container variants for a staggered reveal
+  // ... (rest of your existing variants and state)
   const heroContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.25, // Slightly adjusted stagger
+        staggerChildren: 0.25,
         delayChildren: 0.3,
       },
     },
   };
 
-  // Variants for individual elements - added subtle 3D effect
   const itemVariants = {
     hidden: { opacity: 0, y: 40, scale: 0.95, rotateX: -10 },
     visible: {
@@ -52,7 +51,7 @@ const HeroSection = () => {
       opacity: 1,
       x: 0,
       transition: {
-        delay: i * 0.15, // Slightly increased delay for more pronounced stagger
+        delay: i * 0.15, 
         type: "spring",
         stiffness: 280,
         damping: 25
@@ -60,30 +59,29 @@ const HeroSection = () => {
     }),
   };
 
+
   return (
     <motion.section
-      className="relative h-screen min-h-[600px] sm:min-h-[680px] md:min-h-[750px] flex items-center justify-center overflow-hidden p-4 sm:p-6 animated-gradient-bg" // UPDATED: Responsive min-height
+      className="relative min-h-screen flex items-center justify-center overflow-hidden p-4 sm:p-6 animated-gradient-bg" 
       initial="hidden"
       animate="visible"
       variants={heroContainerVariants}
     >
-      {/* Optional: Subtle geometric patterns or shapes for more depth */}
-      {/* <div className="absolute inset-0 z-0 opacity-10"> SVG_Pattern_Here </div> */}
-
+      {/* ... (rest of your card content) ... */}
       <motion.div
-        className="relative z-10 max-w-5xl w-full mx-auto text-center bg-white/60 backdrop-blur-xl border border-white/50 rounded-[40px] shadow-2xl shadow-pink-500/20 p-6 sm:p-10 md:p-16" // UPDATED: Responsive padding
+        className="relative z-10 max-w-5xl w-full mx-auto text-center bg-white/60 backdrop-blur-xl border border-white/50 rounded-[40px] shadow-2xl shadow-pink-500/20 p-8 sm:p-10 md:p-16"
         variants={itemVariants} 
       >
         <motion.h1
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold mb-4 sm:mb-6 flex items-center justify-center gap-x-3 sm:gap-x-4 leading-tight
-                     text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" // UPDATED: Responsive text size and margin
+                     text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600"
           variants={titleItemVariants}
         >
           <Target className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 flex-shrink-0 text-purple-600" />
           CampusLink
         </motion.h1>
         <motion.p
-          className="text-base sm:text-xl md:text-2xl mb-8 sm:mb-12 font-medium text-slate-700 max-w-3xl mx-auto leading-relaxed" // UPDATED: Responsive text size and margin
+          className="text-base sm:text-xl md:text-2xl mb-8 sm:mb-12 font-medium text-slate-700 max-w-3xl mx-auto leading-relaxed"
           variants={itemVariants}
         >
           Unlock your academic future. We provide precise course recommendations for 2025, tailored to your grades and aspirations.
@@ -173,17 +171,46 @@ const HeroSection = () => {
         )}
       </AnimatePresence>
 
+      {/* MODIFIED ARROW SECTION */}
       <motion.a
-        href="#next-section" 
+        href="#next-section"
         aria-label="Scroll to next section"
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 p-2.5 rounded-full text-purple-600 hover:text-pink-600 hover:bg-white/50 transition-all duration-300"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 1.2, type: "spring", stiffness: 70 }}
-        whileHover={{ scale: 1.15, y: -6 }}
+        // Apply new styles for the circular, gradient button
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 
+                   w-12 h-12 sm:w-14 sm:h-14 
+                   flex items-center justify-center 
+                   rounded-full 
+                   bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 
+                   text-white shadow-lg"
+        initial={{ opacity: 0, y: 20 }} // Start slightly lower and faded
+        animate={{
+          opacity: 1,
+          y: [0, -7, 0], // Target y-keyframes for bobbing: land at 0, move up to -7, back to 0
+        }}
+        transition={{
+          delay: 1.8, // Overall delay for the arrow to start its animation
+          opacity: { duration: 0.5, ease: "easeOut" }, // Fade-in transition
+          y: { // Transition for the y-property (bobbing)
+            // The initial movement from initial.y (20) to the first keyframe y (0)
+            // will use these settings if not overridden by a specific spring for initial appearance.
+            // For a continuous bob after an initial spring, it's more complex.
+            // This setup will make the y animation (including initial move from 20 to 0) follow these loop settings.
+            duration: 1.6,      // Duration of one full bob cycle (0 -> -7 -> 0)
+            repeat: Infinity,   // Repeat forever
+            repeatType: "loop", // "loop" is good for [A, B, A] sequence. "mirror" for [A,B] then [B,A]
+            ease: "easeInOut",  // Smooth easing for the bobbing
+          }
+        }}
+        whileHover={{
+          scale: 1.15,
+          boxShadow: "0px 0px 25px rgba(236, 72, 153, 0.6)", // Pinkish glow (hex #EC4899 -> rgba(236, 72, 153, alpha))
+          // y: -3 // Optionally lift it a bit more on hover, Framer will manage this over the animation
+        }}
         whileTap={{ scale: 0.95 }}
       >
-        <ArrowDown className="w-9 h-9" />
+        {/* Use ArrowDown or ChevronDown for a different feel */}
+        <ArrowDown className="w-7 h-7 sm:w-8 sm:h-8" />
+        {/* <ChevronDown className="w-8 h-8 sm:w-9 sm:h-9" /> */}
       </motion.a>
 
     </motion.section>
