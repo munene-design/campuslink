@@ -65,14 +65,17 @@ const ClusterWeightPage = () => {
                 <div className="max-w-4xl w-full mx-auto space-y-8">
 
                     {/* Animated Title */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: -50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
-                        className="text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 drop-shadow-lg"
-                    >
-                        🎯 Enter Your KUCCPS Cluster Weights
-                    </motion.h1>
+                   <motion.h1
+  initial={{ opacity: 0, y: -50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="text-5xl font-bold text-center drop-shadow-lg"
+>
+  <span className="text-5xl">🎯</span>{" "}
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
+    Enter Your KUCCPS Cluster Weights
+  </span>
+</motion.h1>
 
                     {/* Help Button */}
                     <motion.div
