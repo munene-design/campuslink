@@ -9,7 +9,6 @@ const ClusterWeightPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
-    // State to hold all input values in a single object
     const [clusterValues, setClusterValues] = useState({});
 
     useEffect(() => {
@@ -20,7 +19,6 @@ const ClusterWeightPage = () => {
         });
     }, []);
 
-    // All 20 clusters with their specific names and icons
     const clusters = [
         { name: "Law", icon: "⚖️" },
         { name: "Business", icon: "💼" },
@@ -44,17 +42,14 @@ const ClusterWeightPage = () => {
         { name: "Theology & Philosophy", icon: "🕊️" },
     ];
 
-    // Handles input changes and enforces the '0.000' format
     const handleInputChange = (clusterIndex, value) => {
-        // Allows a single digit, an optional dot, and up to three decimal places.
         if (/^[0-9](\.[0-9]{0,3})?$/.test(value) || value === "") {
              setClusterValues(prev => ({ ...prev, [clusterIndex]: value }));
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white font-sans overflow-hidden">
-            {/* Animated Gradient Blobs for a dynamic background */}
+        <div className="min-h-screen bg-gray-900 text-white font-sans">
             <div className="absolute inset-0 z-0 opacity-40">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl opacity-50 animate-blob"></div>
                 <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-pink-600 rounded-full filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
@@ -62,22 +57,20 @@ const ClusterWeightPage = () => {
             </div>
 
             <div className="relative z-10 flex flex-col items-center justify-center py-16 px-4 sm:px-6">
-                <div className="max-w-4xl w-full mx-auto space-y-8">
+                <div className="max-w-7xl w-full mx-auto space-y-8">
 
-                    {/* Animated Title */}
-                   <motion.h1
-  initial={{ opacity: 0, y: -50 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.7, ease: "easeOut" }}
-  className="text-5xl font-bold text-center drop-shadow-lg"
->
-  <span className="text-5xl">🎯</span>{" "}
-  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
-    Enter Your KUCCPS Cluster Weights
-  </span>
-</motion.h1>
+                    <motion.h1
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="text-5xl font-bold text-center drop-shadow-lg"
+                    >
+                        <span className="text-5xl">🎯</span>{" "}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
+                            Enter Your KUCCPS Cluster Weights
+                        </span>
+                    </motion.h1>
 
-                    {/* Help Button */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -96,15 +89,17 @@ const ClusterWeightPage = () => {
                         {isModalOpen && <ClusterHelpModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
                     </AnimatePresence>
 
-                    {/* Glassmorphism Input Form Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-                        className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-8 sm:p-10"
+                        className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-8 sm:p-12"
                     >
-                        {/* THIS IS THE SCROLLABLE CONTAINER. All 20 clusters are inside. */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 max-h-[75vh] overflow-y-auto pr-4 custom-scrollbar">
+                        {/* KEY CHANGE: 
+                          The scrolling classes are removed and replaced with a responsive grid 
+                          that shows more columns on wider screens.
+                        */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10">
                             {clusters.map((cluster, index) => (
                                 <div key={index} data-aos="fade-up" data-aos-delay={index * 50}>
                                     <label className="flex items-start text-lg text-purple-300 font-medium mb-2">
@@ -117,7 +112,7 @@ const ClusterWeightPage = () => {
                                     <div className="relative">
                                         <input
                                             type="text"
-                                            maxLength="5" // e.g., 1.234
+                                            maxLength="5"
                                             value={clusterValues[index] || ''}
                                             onChange={(e) => handleInputChange(index, e.target.value)}
                                             placeholder="0.000"
@@ -128,13 +123,16 @@ const ClusterWeightPage = () => {
                             ))}
                         </div>
 
-                        {/* Continue Button */}
-                        <div className="text-center mt-10">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
+                        <div className="text-center mt-12">
+                             <motion.button
+                                whileHover={{ 
+                                    scale: 1.05,
+                                    boxShadow: "0 0 20px rgba(233, 171, 233, 0.5), 0 0 30px rgba(192, 132, 252, 0.4)" 
+                                }}
                                 whileTap={{ scale: 0.95 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                                 onClick={() => navigate("/enter-interest")}
-                                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-12 py-4 rounded-full text-xl font-bold shadow-lg hover:shadow-purple-500/50 transition-all duration-300 transform"
+                                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-12 py-4 rounded-full text-xl font-bold shadow-lg transition-shadow duration-300"
                             >
                                 Continue ➡
                             </motion.button>

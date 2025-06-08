@@ -171,47 +171,44 @@ const HeroSection = () => {
         )}
       </AnimatePresence>
 
-      {/* MODIFIED ARROW SECTION */}
       <motion.a
-        href="#next-section"
-        aria-label="Scroll to next section"
-        // Apply new styles for the circular, gradient button
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 
-                   w-12 h-12 sm:w-14 sm:h-14 
-                   flex items-center justify-center 
-                   rounded-full 
-                   bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 
-                   text-white shadow-lg"
-        initial={{ opacity: 0, y: 20 }} // Start slightly lower and faded
-        animate={{
-          opacity: 1,
-          y: [0, -7, 0], // Target y-keyframes for bobbing: land at 0, move up to -7, back to 0
-        }}
-        transition={{
-          delay: 1.8, // Overall delay for the arrow to start its animation
-          opacity: { duration: 0.5, ease: "easeOut" }, // Fade-in transition
-          y: { // Transition for the y-property (bobbing)
-            // The initial movement from initial.y (20) to the first keyframe y (0)
-            // will use these settings if not overridden by a specific spring for initial appearance.
-            // For a continuous bob after an initial spring, it's more complex.
-            // This setup will make the y animation (including initial move from 20 to 0) follow these loop settings.
-            duration: 1.6,      // Duration of one full bob cycle (0 -> -7 -> 0)
-            repeat: Infinity,   // Repeat forever
-            repeatType: "loop", // "loop" is good for [A, B, A] sequence. "mirror" for [A,B] then [B,A]
-            ease: "easeInOut",  // Smooth easing for the bobbing
-          }
-        }}
-        whileHover={{
-          scale: 1.15,
-          boxShadow: "0px 0px 25px rgba(236, 72, 153, 0.6)", // Pinkish glow (hex #EC4899 -> rgba(236, 72, 153, alpha))
-          // y: -3 // Optionally lift it a bit more on hover, Framer will manage this over the animation
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {/* Use ArrowDown or ChevronDown for a different feel */}
-        <ArrowDown className="w-7 h-7 sm:w-8 sm:h-8" />
-        {/* <ChevronDown className="w-8 h-8 sm:w-9 sm:h-9" /> */}
-      </motion.a>
+  href="#next-section"
+  aria-label="Scroll to next section"
+  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 
+             w-10 h-10 sm:w-12 sm:h-12
+             flex items-center justify-center 
+             rounded-full 
+             bg-white/10
+             backdrop-blur-sm
+             border border-white/20
+             text-white shadow-sm"
+  initial={{ opacity: 0, y: 10 }}
+  animate={{
+    opacity: 1,
+    y: [0, -5, 0],
+  }}
+  transition={{
+    delay: 1.8,
+    opacity: { duration: 0.4, ease: "easeOut" },
+    y: {
+      duration: 1.8,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "easeInOut",
+    }
+  }}
+  whileHover={{
+    scale: 1.1,
+    backgroundColor: "rgba(255,255,255,0.15)",
+    boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.3)",
+  }}
+  whileTap={{ scale: 0.95 }}
+>
+  {/* Modern minimalist arrow design - single line with circle */}
+  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <path d="M12 5v14m7-7l-7 7-7-7" />
+</svg>
+</motion.a>
 
     </motion.section>
   );
