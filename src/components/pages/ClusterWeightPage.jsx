@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import ClusterHelpModal from '../ClusterHelpModal'; // Make sure this component exists
+import ClusterHelpModal from '../ClusterHelpModal'; // Make sure this component exists and the path is correct
 
 const ClusterWeightPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
-
     const [clusterValues, setClusterValues] = useState({});
 
     useEffect(() => {
@@ -49,7 +48,7 @@ const ClusterWeightPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white font-sans">
+        <div className="relative min-h-screen bg-gray-900 text-white font-sans overflow-x-hidden">
             <div className="absolute inset-0 z-0 opacity-40">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl opacity-50 animate-blob"></div>
                 <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-pink-600 rounded-full filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
@@ -95,10 +94,6 @@ const ClusterWeightPage = () => {
                         transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
                         className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-8 sm:p-12"
                     >
-                        {/* KEY CHANGE: 
-                          The scrolling classes are removed and replaced with a responsive grid 
-                          that shows more columns on wider screens.
-                        */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10">
                             {clusters.map((cluster, index) => (
                                 <div key={index} data-aos="fade-up" data-aos-delay={index * 50}>
@@ -145,3 +140,4 @@ const ClusterWeightPage = () => {
 };
 
 export default ClusterWeightPage;
+                                    
