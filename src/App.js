@@ -38,7 +38,6 @@ function App() {
                 <>
                   <HeroSection />
                   <UpdatesSection />
-                  
                   <EmailSignup />
                   <FAQSection />
                   <Footer /> {/* ✅ Included only on landing */}
