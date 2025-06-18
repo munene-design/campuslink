@@ -31,3 +31,35 @@
   background-size: 400% 400%;
   animation: brightGradientBG 25s ease infinite;
 }
+ .star-field { 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100vh; 
+        z-index: 0; 
+      }
+      .star-field .layer { 
+        position: absolute; 
+        inset: 0; 
+        background-repeat: repeat;
+      }
+      .star-field .layer:nth-child(1) { 
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/background-pattern.png');
+        background-size: 100px;
+        animation: move-stars 200s linear infinite;
+      }
+      .star-field .layer:nth-child(2) { 
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/background-pattern.png');
+        background-size: 250px;
+        animation: move-stars 150s linear infinite;
+      }
+      .star-field .layer:nth-child(3) { 
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/background-pattern.png');
+        background-size: 400px;
+        animation: move-stars 100s linear infinite;
+      }
+      @keyframes move-stars { 
+        from { transform: translateY(0); } 
+        to { transform: translateY(-1000px); } 
+        }
