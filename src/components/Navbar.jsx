@@ -230,9 +230,9 @@ const Navbar = () => {
               onClick={(e) => e.stopPropagation()}
               className="bg-gradient-to-br from-gray-800 via-slate-800 to-gray-900 rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8 text-center relative border border-white/10"
               // Add a subtle drag constraint for fun, optional
-              // drag
-              // dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-              // dragElastic={0.1}
+              drag
+              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+               dragElastic={0.1}
             >
               <motion.button
                 className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors"

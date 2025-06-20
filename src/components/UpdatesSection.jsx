@@ -89,7 +89,7 @@ export default function UpdatesSection() {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-slate-50 via-sky-100 to-blue-200 py-20 sm:py-24 px-6 overflow-hidden" id="#next-section"> {/* Changed section id */}
+    <section className="relative bg-gradient-to-br from-slate-50 via-sky-100 to-blue-200 py-20 sm:py-24 px-6 overflow-hidden" id="next-section"> {/* Changed section id */}
       {/* Decorative Background Shapes */}
       <AnimatedBackgroundShape
         className="bg-blue-300/50 rounded-full blur-2xl"

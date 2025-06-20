@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { debounce } from 'lodash';
 import { Wind } from 'lucide-react';
 
-// Data and Utils - CORRECTED PATHS
+// Data and Utils 
 import { generateCoursePDF } from '../../utils/pdfGenerator';
 import { dummyResultsData } from '../../data/dummyResults';
 
-// Child Components - CORRECTED PATHS
+// Child Components 
 import AIAdvisor from '../AIAdvisor';
 import StarryBackground from '../results/StarryBackground';
 import ResultsHeader from '../results/ResultsHeader';

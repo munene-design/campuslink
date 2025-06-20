@@ -7,11 +7,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop"; // ✅ New
 import HeroSection from "./components/HeroSection";
+import TrendingSection from './components/TrendingSection';
 import UpdatesSection from "./components/UpdatesSection";
 import EmailSignup from "./components/EmailSignup";
 import FAQSection from "./components/FAQSection";
 import FloatingActions from "./components/FloatingActions";
 import Footer from "./components/Footer";
+
 
 // Pages 
 import GradesPage from "./components/pages/GradesPage";
@@ -37,6 +39,7 @@ function App() {
               element={
                 <>
                   <HeroSection />
+                   <TrendingSection />
                   <UpdatesSection />
                   <EmailSignup />
                   <FAQSection />
